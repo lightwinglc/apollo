@@ -55,7 +55,7 @@ void getNoCacheProperty(apollo_env apolloEnv,Properties* properties);
  * @param apolloEnv
  * @param notification数组
  */
-void submitNotifications(apollo_env apolloEnv,notification notifications,int* flag,void (*callback)(Properties* old,Properties* new));
+void submitNotifications(apollo_env *apolloEnv,notification *notifications,int* flag,void (*callback)(Properties* old,Properties* newPro));
 /**
  * 独立线程运行长更新检测，异步模式
  * @param apolloEnv
@@ -64,4 +64,4 @@ void submitNotifications(apollo_env apolloEnv,notification notifications,int* fl
  * @param callback
  * @return
  */
-int submitNotificationsAsync(apollo_env apolloEnv,notification notifications,int* flag,void (*callback)(Properties* old,Properties* new));
+int submitNotificationsAsync(apollo_env *apolloEnv,notification *notifications,int* flag,void (*callback)(Properties* old,Properties* newPro));

@@ -49,15 +49,29 @@ void jsonStrToProperties(String properStr,String childNodeName,Properties* prope
     else
         configurations=jsonObject;
     int i=0;
+    if (configurations == NULL) {
+        json_object_put(jsonObject);
+        properties->len = 0;
+        return;
+    }
     size_t configurationsLength=json_object_object_length(configurations);
-    String* keys=malloc(sizeof(char*)*configurationsLength);
+    String* keys=malloc((sizeof(char*)*configurationsLength) + 1);
     String* values=malloc(sizeof(char*)*configurationsLength);
     properties->len=configurationsLength;
     json_object_object_foreach(configurations,json_key,jsonValue){
-        keys[i]=json_key;
-        values[i]=json_object_get_string(jsonValue);
+        keys[i] = malloc(strlen(json_key) + 1);
+        memset(keys[i], 0, strlen(json_key) + 1);
+        strcpy((char *)keys[i], json_key);
+
+        const char * value = json_object_get_string(jsonValue);
+        values[i] = malloc(strlen(value) + 1);
+        memset(values[i], 0, strlen(value) + 1);
+        strcpy((char *)values[i], value);
+        // keys[i]=json_key;
+        // values[i]=json_object_get_string(jsonValue);
         i++;
     }
     properties->keys=keys;
     properties->values=values;
+    json_object_put(jsonObject);
 }
