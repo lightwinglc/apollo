@@ -156,10 +156,28 @@ void submitNotifications(apollo_env *apolloEnv,notification *notifications,int* 
                         callback(&oldProperties, &newProperties);
                     }
                     notifications->notificationId = notificationId;
+
+                    // 释放内存
+                    if (oldProperties.len > 0) {
+                        for (int i = 0; i < oldProperties.len; i++) {
+                            if (oldProperties.keys[i] != NULL) {
+                                free(oldProperties.keys[i]);
+                            }
+                            if (oldProperties.values[i] != NULL) {
+                                free(oldProperties.values[i]);
+                            }
+                        }
+                        if (oldProperties.keys != NULL) {
+                            free(oldProperties.keys);
+                        }
+                        if (oldProperties.values != NULL) {
+                            free(oldProperties.values);
+                        }
+                        oldProperties.len = 0;
+                    }
+
                     oldProperties=newProperties;
-//                    newProperties.len=0;
-//                    free(newProperties.keys);
-//                    free(newProperties.values);
+
                     memset(notiStr, 0, 1000);
                     json_object_put(jsonObject);
                 }
